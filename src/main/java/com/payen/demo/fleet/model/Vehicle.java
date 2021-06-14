@@ -1,13 +1,14 @@
-package com.payen.demo.fleet.dto;
+package com.payen.demo.fleet.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class VehicleAvailableDTO {
+@ToString
+@EqualsAndHashCode
+public abstract class Vehicle {
+
     private String type;
     private String registrationNumber;
     private int numberOfWheels;

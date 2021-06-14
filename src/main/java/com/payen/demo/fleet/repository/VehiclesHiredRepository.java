@@ -1,15 +1,23 @@
-package com.payen.demo.company.fleet;
+package com.payen.demo.fleet.repository;
 
-import com.payen.demo.company.model.Vehicle;
+import com.payen.demo.fleet.dto.VehicleHiredDTO;
+import com.payen.demo.fleet.model.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class VehiclesHiredRepository {
 
-    private static Map<String, List<Vehicle>> hiredVehicles = new HashMap<>();
+    private Map<String, List<Vehicle>> hiredVehicles;
+
+    @Autowired
+    public VehiclesHiredRepository(Map<String, List<Vehicle>> hiredVehicles) {
+        this.hiredVehicles = hiredVehicles;
+    }
 
     public List<VehicleHiredDTO> getAllHiredVehicles() {
         List<VehicleHiredDTO> allHiredVehicles = new ArrayList<>();
@@ -24,7 +32,7 @@ public class VehiclesHiredRepository {
 
         for (Vehicle vehicle : entrySet.getValue()) {
             hiredVehicles.add(new VehicleHiredDTO(
-                    vehicle.getClass().toString().toLowerCase(),
+                    vehicle.getType(),
                     vehicle.getRegistrationNumber(),
                     vehicle.getNumberOfWheels(),
                     vehicle.getNumberOfPassengers(),

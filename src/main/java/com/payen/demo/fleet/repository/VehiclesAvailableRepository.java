@@ -1,14 +1,17 @@
-package com.payen.demo.company.fleet;
+package com.payen.demo.fleet.repository;
 
-import com.payen.demo.company.model.*;
+import com.payen.demo.fleet.dto.VehicleAvailableDTO;
+import com.payen.demo.fleet.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Repository
 public class VehiclesAvailableRepository {
 
     private static Map<String, Vehicle> vehiclesAvailable = new HashMap<>();
-    private VehiclesHiredRepository hiredVehicles;
 
     static {
         Vehicle car1 = new Car("AB12 ZXC", 4, 5);
@@ -34,6 +37,13 @@ public class VehiclesAvailableRepository {
         vehiclesAvailable.put(motorbike3.getRegistrationNumber(), motorbike3);
     }
 
+    private VehiclesHiredRepository hiredVehicles;
+
+    @Autowired
+    public VehiclesAvailableRepository(VehiclesHiredRepository hiredVehicles) {
+        this.hiredVehicles = hiredVehicles;
+    }
+
     public List<VehicleAvailableDTO> getAllAvailableVehicles() {
         return vehiclesAvailable.values().stream()
                 .map(this::vehicleAvailableToDTOMapper)
@@ -42,11 +52,11 @@ public class VehiclesAvailableRepository {
 
     private VehicleAvailableDTO vehicleAvailableToDTOMapper(Vehicle vehicle) {
         return new VehicleAvailableDTO(
-                vehicle.getClass().toString().toLowerCase(),
+                vehicle.getType(),
                 vehicle.getRegistrationNumber(),
                 vehicle.getNumberOfWheels(),
                 vehicle.getNumberOfPassengers()
-                );
+        );
     }
 
     public void addNewVehicle(Vehicle vehicle) {
